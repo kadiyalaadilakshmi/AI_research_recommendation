@@ -1,0 +1,517 @@
+I already have a working Research Paper Recommendation System. The current application searches for research papers based on a user-provided research title or keywords and displays recommended papers.
+
+I do NOT want to rebuild the project from scratch.
+
+Your task is to analyze my entire existing codebase, understand the current architecture, preserve all existing functionality, fix any issues, and extend it into a complete AI-Powered Research Assistant.
+
+Before making any modifications:
+
+Study every folder and file.
+Understand the frontend, backend, APIs, and database.
+Identify existing features.
+Reuse existing code whenever possible.
+Remove duplicate or unnecessary code.
+Refactor only where necessary.
+Ensure the project remains modular and maintainable.
+Primary Goal
+
+The application should not behave like a simple search engine similar to Google Scholar.
+
+Instead, it should become an intelligent AI assistant that helps users:
+
+Discover research papers
+Compare papers
+Understand papers
+Download papers
+Download datasets
+Find implementation code
+Generate research roadmaps
+Identify research gaps
+Chat with AI about papers
+Receive personalized recommendations
+Explore trending research topics
+
+The application must support any research domain, not just a predefined or limited set of titles.
+
+Examples:
+
+Artificial Intelligence
+Machine Learning
+Deep Learning
+NLP
+Computer Vision
+Cyber Security
+IoT
+Blockchain
+Cloud Computing
+Medical Imaging
+Agriculture
+Data Mining
+Robotics
+Software Engineering
+
+The system should dynamically fetch results using APIs instead of relying on static datasets.
+
+Feature 1 — Intelligent Paper Search
+
+Improve the existing search.
+
+The search should accept:
+
+Research title
+Keywords
+Project title
+Problem statement
+
+Example:
+
+"Tomato Leaf Disease Detection using Deep Learning"
+
+The system should retrieve the most relevant research papers from reliable academic sources such as:
+
+Semantic Scholar
+arXiv
+Crossref
+OpenAlex
+CORE
+PubMed (when applicable)
+
+Return the top 5–10 most relevant papers.
+
+Each paper should display:
+
+Title
+Authors
+Publication year
+Journal/Conference
+Abstract
+DOI
+Citation count (if available)
+PDF availability
+Dataset availability
+Source
+GitHub implementation (if available)
+Feature 2 — AI Research Assistant
+
+Do not only display papers.
+
+For every paper, provide an AI-generated explanation.
+
+Include:
+
+Simple summary
+Main objective
+Research problem
+Methodology
+Algorithms used
+Dataset used
+Model architecture
+Evaluation metrics
+Results
+Advantages
+Limitations
+Future scope
+
+The explanation should be written in simple language suitable for students.
+
+Feature 3 — Paper Comparison Dashboard
+
+If multiple papers are found (for example 5 papers), automatically generate a comparison table.
+
+Include columns such as:
+
+Paper title
+Publication year
+Authors
+Journal
+Dataset
+Algorithm
+Model
+Accuracy
+Precision
+Recall
+F1 Score
+Citation count
+Advantages
+Limitations
+Novel contribution
+
+After the comparison, generate an AI recommendation explaining:
+
+Which paper performs best
+Which paper is newest
+Which paper has the highest citations
+Which paper is easiest for beginners
+Which paper is best for implementation
+Which paper is best for future research
+
+Use tables and charts wherever appropriate.
+
+Feature 4 — Explain Difficult Papers
+
+Add an "Explain Paper" button.
+
+When clicked, AI should explain the selected paper in simple English.
+
+Include:
+
+Step-by-step explanation
+Easy examples
+Important technical terms
+Architecture explanation
+Why the authors chose that algorithm
+Real-world applications
+
+The explanation should feel like a teacher explaining to a student.
+
+Feature 5 — Research Gap Detection
+
+Analyze all retrieved papers.
+
+Identify:
+
+Common techniques
+Frequently used datasets
+Common limitations
+Existing challenges
+Missing research areas
+
+Generate:
+
+Possible Research Gaps
+
+Possible Future Work
+
+Potential Novel Research Ideas
+
+This should be AI-generated using information from all retrieved papers.
+
+Feature 6 — Research Roadmap Generator
+
+Generate a learning roadmap for the searched topic.
+
+Example:
+
+Research Topic
+
+↓
+
+Prerequisite Concepts
+
+↓
+
+Basic Papers
+
+↓
+
+Intermediate Papers
+
+↓
+
+Advanced Papers
+
+↓
+
+Recommended Algorithms
+
+↓
+
+Datasets
+
+↓
+
+Implementation Resources
+
+↓
+
+Project Ideas
+
+↓
+
+Future Research Opportunities
+
+Display the roadmap visually.
+
+Feature 7 — Dataset Recommendation & Download
+
+Automatically identify datasets used in retrieved papers.
+
+Display:
+
+Dataset name
+
+Description
+
+Dataset size
+
+Download button
+
+Source
+
+Supported formats
+
+If available, provide direct links to:
+
+Kaggle
+UCI
+Hugging Face
+GitHub
+Official datasets
+
+Users should be able to download datasets directly from the application.
+
+Feature 8 — Research Paper Download
+
+For every paper:
+
+Display a Download PDF button.
+
+If the paper is Open Access:
+
+Allow direct PDF download.
+
+If not Open Access:
+
+Provide:
+
+DOI
+
+Publisher page
+
+Official paper link
+
+Never violate publisher copyright restrictions.
+
+Feature 9 — Code Repository Recommendation
+
+Automatically search for official or trusted GitHub implementations.
+
+Display:
+
+Repository name
+
+Stars
+
+Language
+
+Framework
+
+Last updated
+
+Repository link
+
+If multiple repositories exist:
+
+Rank them based on popularity and maintenance.
+
+Feature 10 — AI Chat Assistant
+
+Integrate a chatbot.
+
+The chatbot should understand the currently selected research papers.
+
+Users can ask questions such as:
+
+"Explain this paper."
+
+"What dataset was used?"
+
+"Why did the authors use CNN?"
+
+"Compare Paper 2 and Paper 4."
+
+"What improvements can I make?"
+
+"Suggest my own project."
+
+"Explain this algorithm."
+
+The chatbot should remember the current search session.
+
+Feature 11 — Personalized Recommendations
+
+Based on search history and user interests, recommend related papers.
+
+Example:
+
+If the user searches:
+
+Computer Vision
+
+Recommend:
+
+Image Classification
+
+Object Detection
+
+Medical Imaging
+
+Vision Transformers
+
+Self-Supervised Learning
+
+Recommendations should improve over time.
+
+Feature 12 — Trending Research
+
+Create a Trending Research page.
+
+Fetch real-time trending topics from trusted sources.
+
+Display:
+
+Trending Topics
+
+Recently Published Papers
+
+Popular Research Areas
+
+Emerging Technologies
+
+Top Conferences
+
+Newest AI Research
+
+The list should update automatically and should not be hardcoded.
+
+Feature 13 — Citation Generator
+
+Automatically generate citations for each paper in:
+
+APA
+
+IEEE
+
+MLA
+
+Chicago
+
+BibTeX
+
+Users should be able to copy citations with one click.
+
+Feature 14 — Related Papers
+
+Recommend semantically similar papers using embedding-based search.
+
+Not just keyword matching.
+
+Use sentence embeddings or vector search to improve recommendations.
+
+Feature 15 — Research Difficulty Level
+
+For every paper, display:
+
+🟢 Beginner
+
+🟡 Intermediate
+
+🔴 Advanced
+
+The AI should estimate the level based on technical complexity.
+
+Feature 16 — Research Quality Score
+
+Generate an overall quality score based on:
+
+Publication year
+
+Citation count
+
+Journal quality
+
+Conference ranking
+
+Methodology
+
+Novelty
+
+Impact
+
+Display:
+
+Research Quality Score
+
+Overall Rating
+
+Feature 17 — Modern Dashboard
+
+Create a professional UI.
+
+Include:
+
+Search page
+
+Paper cards
+
+Comparison tables
+
+Charts
+
+Trend dashboard
+
+AI Chat sidebar
+
+Dataset cards
+
+GitHub cards
+
+Roadmap visualization
+
+Responsive design
+
+Dark Mode
+
+Loading animations
+
+Professional color palette
+
+Technical Requirements
+
+Backend:
+
+FastAPI (preferred) or Flask
+Modular architecture
+Async API requests
+Proper error handling
+Logging
+Caching where appropriate
+
+Frontend:
+
+React
+Tailwind CSS
+Responsive UI
+Charts
+Loading states
+Toast notifications
+
+AI:
+
+Gemini or OpenAI API
+LangChain (optional)
+Sentence Transformers
+Vector database (FAISS or ChromaDB)
+
+Search APIs:
+
+Semantic Scholar
+OpenAlex
+arXiv
+Crossref
+CORE
+PubMed (optional)
+
+Database:
+
+PostgreSQL or SQLite
+Store user searches
+Store bookmarks
+Store chat history
+Performance Requirements
+Fast search results
+Efficient caching
+Pagination
+Lazy loading
+Retry failed API requests
+Graceful handling of unavailable APIs

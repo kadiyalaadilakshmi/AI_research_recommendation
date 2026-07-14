@@ -3,20 +3,32 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AI-Powered Research Assistant API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: papers
+    description: Research paper operations
+  - name: ai
+    description: AI-powered analysis features
+  - name: trending
+    description: Trending research topics
+  - name: chat
+    description: AI chat assistant
+  - name: datasets
+    description: Dataset discovery
+  - name: github
+    description: GitHub repository discovery
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +36,312 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /papers/search:
+    get:
+      operationId: searchPapers
+      tags: [papers]
+      summary: Search research papers across multiple academic sources
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Research title, keywords, or problem statement
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: sources
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Comma-separated list of sources (semanticscholar,arxiv,openalex,crossref)
+      responses:
+        "200":
+          description: List of relevant research papers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaperSearchResult"
+        "400":
+          description: Bad request
+
+  /papers/trending:
+    get:
+      operationId: getTrendingPapers
+      tags: [trending]
+      summary: Get trending research papers and topics
+      parameters:
+        - name: field
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Trending papers and topics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrendingResult"
+
+  /papers/compare:
+    post:
+      operationId: comparePapers
+      tags: [ai]
+      summary: AI-powered comparison of multiple papers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompareInput"
+      responses:
+        "200":
+          description: Comparison result with table and AI recommendation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompareResult"
+
+  /papers/gaps:
+    post:
+      operationId: detectResearchGaps
+      tags: [ai]
+      summary: Detect research gaps from a list of papers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GapInput"
+      responses:
+        "200":
+          description: Research gaps analysis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GapResult"
+
+  /papers/roadmap:
+    post:
+      operationId: generateRoadmap
+      tags: [ai]
+      summary: Generate a research roadmap for a topic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoadmapInput"
+      responses:
+        "200":
+          description: Research roadmap
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoadmapResult"
+
+  /papers/explain:
+    post:
+      operationId: explainPaper
+      tags: [ai]
+      summary: Generate a student-friendly AI explanation for a paper
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExplainInput"
+      responses:
+        "200":
+          description: Paper explanation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExplainResult"
+
+  /papers/citations:
+    post:
+      operationId: generateCitations
+      tags: [papers]
+      summary: Generate citations in multiple formats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CitationInput"
+      responses:
+        "200":
+          description: Citations in multiple formats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CitationResult"
+
+  /papers/related:
+    post:
+      operationId: getRelatedPapers
+      tags: [papers]
+      summary: Find semantically related papers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RelatedInput"
+      responses:
+        "200":
+          description: List of related papers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaperSearchResult"
+
+  /datasets/search:
+    get:
+      operationId: searchDatasets
+      tags: [datasets]
+      summary: Search for datasets related to a research topic
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: List of datasets
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DatasetSearchResult"
+
+  /github/search:
+    get:
+      operationId: searchGithubRepos
+      tags: [github]
+      summary: Search for GitHub implementations related to a paper or topic
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+      responses:
+        "200":
+          description: List of GitHub repositories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GithubSearchResult"
+
+  /chat:
+    post:
+      operationId: chatWithAssistant
+      tags: [chat]
+      summary: Chat with AI assistant about research papers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatInput"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResult"
+
+  /searches/history:
+    get:
+      operationId: getSearchHistory
+      tags: [papers]
+      summary: Get recent search history for personalized recommendations
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Search history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchHistoryResult"
+
+  /bookmarks:
+    get:
+      operationId: getBookmarks
+      tags: [papers]
+      summary: Get saved/bookmarked papers
+      responses:
+        "200":
+          description: List of bookmarked papers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookmarkListResult"
+    post:
+      operationId: addBookmark
+      tags: [papers]
+      summary: Save a paper to bookmarks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookmarkInput"
+      responses:
+        "201":
+          description: Bookmarked paper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bookmark"
+
+  /bookmarks/{paperId}:
+    delete:
+      operationId: removeBookmark
+      tags: [papers]
+      summary: Remove a paper from bookmarks
+      parameters:
+        - name: paperId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Bookmark removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +352,595 @@ components:
       required:
         - status
 
+    Paper:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        year:
+          type: ["integer", "null"]
+        journal:
+          type: ["string", "null"]
+        abstract:
+          type: ["string", "null"]
+        doi:
+          type: ["string", "null"]
+        citationCount:
+          type: ["integer", "null"]
+        pdfUrl:
+          type: ["string", "null"]
+        url:
+          type: ["string", "null"]
+        source:
+          type: string
+        hasDataset:
+          type: boolean
+        githubUrl:
+          type: ["string", "null"]
+        difficultyLevel:
+          type: ["string", "null"]
+          description: "beginner | intermediate | advanced"
+        qualityScore:
+          type: ["number", "null"]
+        isOpenAccess:
+          type: boolean
+        fields:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - title
+        - authors
+        - source
+        - isOpenAccess
+        - hasDataset
+        - fields
+
+    PaperSearchResult:
+      type: object
+      properties:
+        papers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paper"
+        total:
+          type: integer
+        query:
+          type: string
+      required:
+        - papers
+        - total
+        - query
+
+    TrendingTopic:
+      type: object
+      properties:
+        topic:
+          type: string
+        paperCount:
+          type: integer
+        growthRate:
+          type: ["number", "null"]
+        description:
+          type: ["string", "null"]
+      required:
+        - topic
+        - paperCount
+
+    TrendingResult:
+      type: object
+      properties:
+        topics:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendingTopic"
+        recentPapers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paper"
+        topConferences:
+          type: array
+          items:
+            type: string
+      required:
+        - topics
+        - recentPapers
+        - topConferences
+
+    CompareInput:
+      type: object
+      properties:
+        papers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paper"
+      required:
+        - papers
+
+    ComparisonRow:
+      type: object
+      properties:
+        paperId:
+          type: string
+        title:
+          type: string
+        year:
+          type: ["integer", "null"]
+        authors:
+          type: ["string", "null"]
+        journal:
+          type: ["string", "null"]
+        dataset:
+          type: ["string", "null"]
+        algorithm:
+          type: ["string", "null"]
+        model:
+          type: ["string", "null"]
+        accuracy:
+          type: ["string", "null"]
+        citationCount:
+          type: ["integer", "null"]
+        advantages:
+          type: ["string", "null"]
+        limitations:
+          type: ["string", "null"]
+        novelContribution:
+          type: ["string", "null"]
+      required:
+        - paperId
+        - title
+
+    CompareResult:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComparisonRow"
+        aiRecommendation:
+          type: string
+        bestForBeginners:
+          type: ["string", "null"]
+        bestForImplementation:
+          type: ["string", "null"]
+        bestForFutureResearch:
+          type: ["string", "null"]
+        mostCited:
+          type: ["string", "null"]
+        newest:
+          type: ["string", "null"]
+      required:
+        - rows
+        - aiRecommendation
+
+    GapInput:
+      type: object
+      properties:
+        papers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paper"
+        topic:
+          type: string
+      required:
+        - papers
+        - topic
+
+    GapResult:
+      type: object
+      properties:
+        commonTechniques:
+          type: array
+          items:
+            type: string
+        frequentDatasets:
+          type: array
+          items:
+            type: string
+        commonLimitations:
+          type: array
+          items:
+            type: string
+        researchGaps:
+          type: array
+          items:
+            type: string
+        futureWork:
+          type: array
+          items:
+            type: string
+        novelIdeas:
+          type: array
+          items:
+            type: string
+      required:
+        - commonTechniques
+        - frequentDatasets
+        - commonLimitations
+        - researchGaps
+        - futureWork
+        - novelIdeas
+
+    RoadmapInput:
+      type: object
+      properties:
+        topic:
+          type: string
+        papers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paper"
+      required:
+        - topic
+
+    RoadmapStep:
+      type: object
+      properties:
+        level:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+        order:
+          type: integer
+      required:
+        - level
+        - title
+        - description
+        - items
+        - order
+
+    RoadmapResult:
+      type: object
+      properties:
+        topic:
+          type: string
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoadmapStep"
+        estimatedTime:
+          type: ["string", "null"]
+      required:
+        - topic
+        - steps
+
+    ExplainInput:
+      type: object
+      properties:
+        paper:
+          $ref: "#/components/schemas/Paper"
+      required:
+        - paper
+
+    ExplainResult:
+      type: object
+      properties:
+        summary:
+          type: string
+        objective:
+          type: string
+        problem:
+          type: string
+        methodology:
+          type: string
+        algorithms:
+          type: array
+          items:
+            type: string
+        dataset:
+          type: ["string", "null"]
+        architecture:
+          type: ["string", "null"]
+        metrics:
+          type: array
+          items:
+            type: string
+        results:
+          type: string
+        advantages:
+          type: array
+          items:
+            type: string
+        limitations:
+          type: array
+          items:
+            type: string
+        futureScope:
+          type: string
+        realWorldApplications:
+          type: array
+          items:
+            type: string
+      required:
+        - summary
+        - objective
+        - problem
+        - methodology
+        - algorithms
+        - metrics
+        - results
+        - advantages
+        - limitations
+        - futureScope
+        - realWorldApplications
+
+    CitationInput:
+      type: object
+      properties:
+        paper:
+          $ref: "#/components/schemas/Paper"
+      required:
+        - paper
+
+    CitationResult:
+      type: object
+      properties:
+        apa:
+          type: string
+        ieee:
+          type: string
+        mla:
+          type: string
+        chicago:
+          type: string
+        bibtex:
+          type: string
+      required:
+        - apa
+        - ieee
+        - mla
+        - chicago
+        - bibtex
+
+    RelatedInput:
+      type: object
+      properties:
+        paper:
+          $ref: "#/components/schemas/Paper"
+        limit:
+          type: integer
+          default: 5
+      required:
+        - paper
+
+    Dataset:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        size:
+          type: ["string", "null"]
+        format:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+        downloadUrl:
+          type: ["string", "null"]
+        kaggleUrl:
+          type: ["string", "null"]
+        huggingfaceUrl:
+          type: ["string", "null"]
+        githubUrl:
+          type: ["string", "null"]
+        paperCount:
+          type: ["integer", "null"]
+        tasks:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - description
+        - source
+        - format
+        - tasks
+
+    DatasetSearchResult:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dataset"
+        total:
+          type: integer
+      required:
+        - datasets
+        - total
+
+    GithubRepo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        fullName:
+          type: string
+        description:
+          type: ["string", "null"]
+        stars:
+          type: integer
+        language:
+          type: ["string", "null"]
+        framework:
+          type: ["string", "null"]
+        lastUpdated:
+          type: string
+        url:
+          type: string
+        topics:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - fullName
+        - stars
+        - lastUpdated
+        - url
+        - topics
+
+    GithubSearchResult:
+      type: object
+      properties:
+        repos:
+          type: array
+          items:
+            $ref: "#/components/schemas/GithubRepo"
+        total:
+          type: integer
+      required:
+        - repos
+        - total
+
+    ChatMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          description: "user | assistant"
+        content:
+          type: string
+      required:
+        - role
+        - content
+
+    ChatInput:
+      type: object
+      properties:
+        message:
+          type: string
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessage"
+        papers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Paper"
+      required:
+        - message
+
+    ChatResult:
+      type: object
+      properties:
+        response:
+          type: string
+        suggestedQuestions:
+          type: array
+          items:
+            type: string
+      required:
+        - response
+        - suggestedQuestions
+
+    SearchHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+        query:
+          type: string
+        resultCount:
+          type: integer
+        searchedAt:
+          type: string
+      required:
+        - id
+        - query
+        - resultCount
+        - searchedAt
+
+    SearchHistoryResult:
+      type: object
+      properties:
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchHistory"
+      required:
+        - history
+
+    Bookmark:
+      type: object
+      properties:
+        id:
+          type: integer
+        paperId:
+          type: string
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        year:
+          type: ["integer", "null"]
+        url:
+          type: ["string", "null"]
+        source:
+          type: string
+        savedAt:
+          type: string
+      required:
+        - id
+        - paperId
+        - title
+        - authors
+        - source
+        - savedAt
+
+    BookmarkListResult:
+      type: object
+      properties:
+        bookmarks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bookmark"
+      required:
+        - bookmarks
+
+    BookmarkInput:
+      type: object
+      properties:
+        paperId:
+          type: string
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        year:
+          type: ["integer", "null"]
+        url:
+          type: ["string", "null"]
+        source:
+          type: string
+      required:
+        - paperId
+        - title
+        - authors
+        - source

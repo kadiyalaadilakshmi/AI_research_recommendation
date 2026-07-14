@@ -4,6 +4,8 @@ import { ai } from "../lib/gemini.js";
 
 const router: IRouter = Router();
 
+const MODEL_CHAIN = ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-2.0-flash"];
+
 const SUGGESTED_QUESTIONS = [
   "What dataset was used in this study?",
   "What are the main limitations of these papers?",
@@ -38,23 +40,43 @@ router.post("/chat", async (req, res): Promise<void> => {
       parts: [{ text: m.content }],
     }));
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [
-        ...chatHistory,
-        { role: "user", parts: [{ text: message }] },
-      ],
-      config: {
-        systemInstruction,
-        maxOutputTokens: 8192,
-      },
-    });
+    const contents = [
+      ...chatHistory,
+      { role: "user" as const, parts: [{ text: message }] },
+    ];
 
-    const responseText = response.text ?? "I apologize, I couldn't generate a response. Please try again.";
+    let responseText = "";
+    const errors: unknown[] = [];
 
-    // Pick 3 relevant suggested questions
-    const suggested = SUGGESTED_QUESTIONS.sort(() => Math.random() - 0.5).slice(0, 3);
+    for (const model of MODEL_CHAIN) {
+      let succeeded = false;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const response = await ai.models.generateContent({
+            model,
+            contents,
+            config: { systemInstruction, maxOutputTokens: 8192 },
+          });
+          responseText = response.text ?? "I apologize, I couldn't generate a response. Please try again.";
+          succeeded = true;
+          break;
+        } catch (err: unknown) {
+          const status = (err as { status?: number }).status;
+          if (status === 503 || status === 429) {
+            errors.push(err);
+            await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt - 1)));
+          } else {
+            errors.push(err);
+            break;
+          }
+        }
+      }
+      if (succeeded) break;
+    }
 
+    if (!responseText) throw errors[0];
+
+    const suggested = [...SUGGESTED_QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 3);
     res.json({ response: responseText, suggestedQuestions: suggested });
   } catch (err) {
     req.log.error({ err }, "Chat failed");

@@ -86,26 +86,29 @@ Be specific and extract real information from the abstracts. Use null for unknow
 
     const result = await generateJson<CompareResponse>(prompt);
 
-    // Ensure rows have the paper IDs
-    if (result.rows && result.rows.length < papers.length) {
-      while (result.rows.length < papers.length) {
-        const p = papers[result.rows.length];
-        result.rows.push({
-          paperId: p.id,
-          title: p.title,
-          year: p.year ?? null,
-          authors: (p.authors ?? []).slice(0, 3).join(", "),
-          journal: p.journal ?? null,
-          dataset: null,
-          algorithm: null,
-          model: null,
-          accuracy: null,
-          citationCount: p.citationCount ?? null,
-          advantages: null,
-          limitations: null,
-          novelContribution: null,
-        });
-      }
+    // Ensure rows is always an array
+    if (!Array.isArray(result.rows)) {
+      result.rows = [];
+    }
+
+    // Fill missing rows with fallback data
+    while (result.rows.length < papers.length) {
+      const p = papers[result.rows.length];
+      result.rows.push({
+        paperId: p.id,
+        title: p.title,
+        year: p.year ?? null,
+        authors: (p.authors ?? []).slice(0, 3).join(", "),
+        journal: p.journal ?? null,
+        dataset: null,
+        algorithm: null,
+        model: null,
+        accuracy: null,
+        citationCount: p.citationCount ?? null,
+        advantages: null,
+        limitations: null,
+        novelContribution: null,
+      });
     }
 
     // Assign paper IDs from original papers array
@@ -113,6 +116,9 @@ Be specific and extract real information from the abstracts. Use null for unknow
       ...row,
       paperId: papers[i]?.id ?? row.paperId,
     }));
+
+    // Ensure top-level fields exist
+    result.aiRecommendation = result.aiRecommendation ?? "AI comparison complete.";
 
     res.json(result);
   } catch (err) {

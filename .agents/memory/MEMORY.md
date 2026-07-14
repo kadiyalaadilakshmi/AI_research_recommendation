@@ -1,0 +1,2 @@
+- [Gemini SDK bundling](gemini-bundling.md) — @google/genai must be bundled by esbuild, not externalized; remove @google/* glob from build.mjs external list.
+- [Paper navigation pattern](paper-navigation.md) — Full Paper objects passed via PaperStoreContext (currentPaper), not URL params, to avoid serialization limits.

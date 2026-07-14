@@ -1,16 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 
-const baseUrl = process.env.AI_INTEGRATIONS_GEMINI_BASE_URL;
-const apiKey = process.env.AI_INTEGRATIONS_GEMINI_API_KEY ?? "placeholder";
+const apiKey = process.env.GEMINI_API_KEY;
 
-if (!baseUrl) {
-  throw new Error("AI_INTEGRATIONS_GEMINI_BASE_URL is not set");
+if (!apiKey) {
+  throw new Error("GEMINI_API_KEY is not set");
 }
 
-export const ai = new GoogleGenAI({
-  apiKey,
-  httpOptions: { baseUrl },
-});
+export const ai = new GoogleGenAI({ apiKey });
 
 export async function generateText(prompt: string, systemInstruction?: string): Promise<string> {
   const response = await ai.models.generateContent({

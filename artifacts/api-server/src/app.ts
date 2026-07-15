@@ -25,7 +25,28 @@ app.use(
     },
   }),
 );
-app.use(cors());
+// Allow the Vercel frontend (and any other configured origins).
+// CORS_ORIGIN can be a comma-separated list of allowed origins.
+const allowedOrigins = process.env["CORS_ORIGIN"]
+  ? process.env["CORS_ORIGIN"].split(",").map((o) => o.trim())
+  : [];
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      // Allow requests with no origin (curl, Postman, same-origin SSR)
+      if (!origin) return cb(null, true);
+      // Allow any origin in development
+      if (process.env["NODE_ENV"] !== "production") return cb(null, true);
+      // In production, check against the allow-list
+      if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+        return cb(null, true);
+      }
+      cb(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

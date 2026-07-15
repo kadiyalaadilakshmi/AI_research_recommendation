@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: researchlens-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
+    startCommand: pnpm --filter @workspace/api-server run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: DATABASE_URL
+        sync: false          # set manually in Render dashboard
+      - key: SESSION_SECRET
+        sync: false          # set manually in Render dashboard
+      - key: CORS_ORIGIN
+        sync: false          # set to your Vercel frontend URL after deploying
